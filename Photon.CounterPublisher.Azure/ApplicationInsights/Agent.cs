@@ -2,12 +2,13 @@
 // Copyright 2019, Gilles Zunino
 // -----------------------------------------------------------------------------------
 
+using System;
+using System.Text;
 using ExitGames.Diagnostics.Counter;
 using ExitGames.Diagnostics.Monitoring;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
-using System.Text;
 
 namespace CounterPublisher.Azure.ApplicationInsights
 {
@@ -58,7 +59,7 @@ namespace CounterPublisher.Azure.ApplicationInsights
 
         private static (string metricNamespace, string metricName) GetMetricDefinition(string counterName)
         {
-            string[] metricNameSplit = counterName.Split(SplitCharacters, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] metricNameSplit = counterName.Split(SplitCharacters, StringSplitOptions.RemoveEmptyEntries);
 
             StringBuilder stringBuilder = new StringBuilder();
             for (int index = 0; index < metricNameSplit.Length - 1; index++)
