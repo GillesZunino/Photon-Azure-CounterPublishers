@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CounterPublisher.Azure.ApplicationInsights", "CounterPublisher.Azure.ApplicationInsights\CounterPublisher.Azure.ApplicationInsights.csproj", "{1CF3850F-1B39-45C1-8BE0-87E2F2F2F47F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photon.CounterPublisher.Azure", "Photon.CounterPublisher.Azure\Photon.CounterPublisher.Azure.csproj", "{1CF3850F-1B39-45C1-8BE0-87E2F2F2F47F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

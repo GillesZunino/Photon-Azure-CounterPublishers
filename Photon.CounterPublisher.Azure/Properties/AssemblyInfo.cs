@@ -5,11 +5,11 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CounterPublisher.Azure.ApplicationInsights")]
-[assembly: AssemblyDescription("ExitGames' Photon counter publisher plugin for Azure Application Insights")]
+[assembly: AssemblyTitle("CounterPublisher.Azure")]
+[assembly: AssemblyDescription("ExitGames' Photon counter publisher plugin for Azure")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Akakani")]
-[assembly: AssemblyProduct("Photon counter publisher plugin for Azure Application Insights")]
+[assembly: AssemblyProduct("Photon counter publisher plugin for Azure")]
 [assembly: AssemblyCopyright("© Gilles Zunino, https://akakani.com, https://gilles.zunino.dev")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("en-us")]

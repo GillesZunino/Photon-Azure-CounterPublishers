@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CounterPublisher.Azure</RootNamespace>
-    <AssemblyName>ApplicationInsightsCounterPublisher</AssemblyName>
+    <AssemblyName>CounterPublisher.Azure</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\Photon\Photon-OnPremise-Server-SDK_v4-0-29-11263\deploy\CounterPublisher\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -51,8 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationInsightsAgentSettings.cs" />
-    <Compile Include="ApplicationInsightsWriter.cs" />
+    <Compile Include="ApplicationInsights\ApplicationInsightsAgentSettings.cs" />
+    <Compile Include="ApplicationInsights\ApplicationInsightsWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
