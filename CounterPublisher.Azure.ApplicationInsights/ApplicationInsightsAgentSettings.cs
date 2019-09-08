@@ -15,5 +15,13 @@ namespace CounterPublisher.Azure
             get { return (string)this["InstrumentationKey"]; }
             set { this["InstrumentationKey"] = value; }
         }
+
+        public ApplicationInsightsAgentSettings()
+        {
+        }
+
+        public ApplicationInsightsAgentSettings(CounterSampleSenderSettings settings) : base(settings)
+        {
+        }
     }
 }
