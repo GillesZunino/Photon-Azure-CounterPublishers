@@ -3,18 +3,25 @@
 // -----------------------------------------------------------------------------------
 
 using System;
+using ExitGames.Diagnostics.Counter;
 using ExitGames.Diagnostics.Monitoring;
 using ExitGames.Diagnostics.Monitoring.Protocol;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace CounterPublisher.Azure.ApplicationInsights
 {
     public class AgentWriter : ICounterSampleWriter
     {
+        private static readonly char[] SplitCharacters = new char[] { '.' };
+
         private bool disposed = false;
 
         private readonly AgentSettings applicationInsightsAgentSettings;
         private CounterSampleSenderBase counterSampleSender;
 
+        private TelemetryClient telemetryClient;
 
         public bool Ready { get; protected set; }
 
@@ -36,7 +43,10 @@ namespace CounterPublisher.Azure.ApplicationInsights
 
             counterSampleSender = sender;
 
-            // TODO: Initialize ApplicationInsights
+            // TODO: Initialize ApplicationInsights correctly from configuration file
+            TelemetryConfiguration telemetryConfiguration = TelemetryConfiguration.CreateDefault();
+            telemetryConfiguration.InstrumentationKey = applicationInsightsAgentSettings.InstrumentationKey;
+            telemetryClient = new TelemetryClient(telemetryConfiguration);
         }
 
         public void Publish(CounterSampleCollection[] packages)
@@ -49,7 +59,29 @@ namespace CounterPublisher.Azure.ApplicationInsights
             }
             else
             {
-                // TODO: Publish to ApplicationInsights with Server Channel
+                PublishPackages(packages);
+            }
+        }
+
+        private void PublishPackages(CounterSampleCollection[] packages)
+        {
+            foreach (CounterSampleCollection package in packages)
+            {
+                foreach (CounterSample counterSample in package)
+                {
+                    // TODO: Investigate the use of Metric Aggregation facilities as opposed to telemetryClient.TrackMetric()
+                    //MetricIdentifier metricIdentifer = new MetricIdentifier(metricNamespace, metricId);
+                    //Metric metric = telemetryClient.GetMetric(metricIdentifer);
+                    //metric.TrackValue();
+
+                    MetricTelemetry metricTelemetry = new MetricTelemetry();
+                    metricTelemetry.Name = package.CounterName;
+                    metricTelemetry.Sum = counterSample.Value;
+                    metricTelemetry.Count = 1;
+                    metricTelemetry.Timestamp = counterSample.Timestamp;
+
+                    telemetryClient.TrackMetric(metricTelemetry);
+                }
             }
         }
 
