@@ -7,7 +7,7 @@ This repository enables Photon's CounterPublisher infrastructure to publish serv
 
 # Installation
 
-1. Clone this repository at the root directory of your Photon Server SDK. The directory structure should be as follows:
+1. Clone this repository at the root of your Photon Server SDK. The directory structure should be as follows:
 
     ```
         <root>
@@ -24,55 +24,56 @@ This repository enables Photon's CounterPublisher infrastructure to publish serv
             |     |     | LICENSE
             |     |     | README.md
     ```
-2. Using Visual Studio, open "Photon-Azure-CounterPublishers\Photon.CounterPublisher.Azure.sln".
-3. Build the solution. All plugin files will be located under Photon.CounterPublisher.Azure\bin\{Debug|Release}. "Release" should be preferred for maximuim performances.
+2. Open `Photon.CounterPublisher.Azure.sln` in Visual Studio,
+3. Build the solution. The output will be located under `Photon.CounterPublisher.Azure\bin\{Debug|Release}`,
+4. Copy the content of `Photon.CounterPublisher.Azure\bin\{Debug|Release}` to the following directories:
+   * `deploy\CounterPublisher\bin`
+   * `deploy\Loadbalancing\GameServer\bin`
+   * `deploy\Loadbalancing\Master\bin`
 
 # Configuration
-You will need an Application Insights resource in an active Azure Subscription. Instruction to create a new Application Insight resource can be bound [here](https://docs.microsoft.com/en-us/azure/azure-monitor/app/create-new-resource).
+Before performance counters can be published, Photon need to be configured to use the plugin. 
 
-1. Copy the Application Insight Instrumentation Key from the Azure portal - This will ressemble a GUID (for example 8323fb13-32aa-46af-b467-8355cf4f8f98). We refer to as this 
-2. Copy the content of Photon.CounterPublisher.Azure\bin\Debug to:
-* "deploy\CounterPublisher\bin"
-* "deploy\Loadbalancing\GameServer\bin"
-* "deploy\Loadbalancing\Master\bin"
+1. Create a new Application Insight resource (see [this page](https://docs.microsoft.com/en-us/azure/azure-monitor/app/create-new-resource) for additional details) and copy the instrumentation key,
 
-3. Configure CounterPublisher, LoadBalancing (Master) and  LoadBalancing (Game) to use the plugin to pubish server performances and statistics in the following files:
+2. Prepare the configuration section. The following snippetsincludes two placeholders which need to be replaced:
+      * `{#InstrumentationKey#}` with the Application Insights instrumentation key acquired in step 1,
+      * `{#Region#}.{#Cluster#}` with a suitable string to identify the Photon server. `{0}` will be replaced with the machine name.
+    ```xml
+    <Photon>
+      <CounterPublisher
+              senderType="CounterPublisher.Azure.ApplicationInsights.AgentSettings, CounterPublisher.Azure"
+              enabled="true"
+              addDefaultAppCounter="true"
+              updateInterval="10">
+          <Sender protocol="CounterPublisher.Azure.ApplicationInsights.AgentWriter, CounterPublisher.Azure"
 
-* "deploy\CounterPublisher\bin\CounterPublisher.dll.config"
-* "deploy\Loadbalancing\GameServer\bin\Photon.LoadBalancing.dll.config"
-* "deploy\Loadbalancing\Master\bin\Photon.LoadBalancing.dll.config"
+              initialDelay="10"
+              sendInterval="10"
+              maxQueueLength="120"
+              maxRetryCount="-1"
 
-These files will already have a <Photon> <CounterPublisher .../> </Photon> section. 
+              senderId="{#Region#}.{#Cluster#}.{0}"
+              instrumentationKey = "{#InstrumentationKey#}" />
+      </CounterPublisher>
+    </Photon>
+    ```
+4. Insert the configuration section prepared in the previous steps in all the following files: 
 
-Replace {#InstrumentationKey#} with the instrumentation key obtained during step 1 
-Replace {#Region#}.{#Cluster#}.{0} with any string representative of the Photon deployment. The '{0}' is replaced by the server name at runtime.
+   * `deploy\CounterPublisher\bin\CounterPublisher.dll.config`
+   * `deploy\Loadbalancing\GameServer\bin\Photon.LoadBalancing.dll.config`
+   * `deploy\Loadbalancing\Master\bin\Photon.LoadBalancing.dll.config`
 
-```xml
-  <Photon>
-    <CounterPublisher
-            senderType="CounterPublisher.Azure.ApplicationInsights.AgentSettings, CounterPublisher.Azure"
-            enabled="true"
-            addDefaultAppCounter="true"
-            updateInterval="10">
-        <Sender protocol="CounterPublisher.Azure.ApplicationInsights.AgentWriter, CounterPublisher.Azure"
+    Each configuration file above already contains a `<Photon><CounterPublisher .../></Photon>` which can be relaced or augmente.
 
-            initialDelay="10"
-            sendInterval="10"
-            maxQueueLength="120"
-            maxRetryCount="-1"
-
-            senderId="{#Region#}.{#Cluster#}.{0}"
-            instrumentationKey = "{#InstrumentationKey#}" />
-    </CounterPublisher>
-  </Photon>
-```
+5. Start Photon. Metrics should become visible in Application Insights within a few minutes.  
 
 # Azure Application Insights
 TODO: Explain how to consume metrics
 
 # TODO
-* Should we auto namespace or not?
-* Should we add dimensions to metrics?
-* Add Metrics (Log Analytics) as an alternative
-* Add Agent Id too - not yet communicated
-* Pass agent name / id as part of docker variables
+
+* Describe more precisely addDefaultAppCounter, enabled, updateInterval, ... and all other attributes
+* Consider adding dimensions to metrics?
+* Add Metrics (Log Analytics) as an alternative to APplication Insights
+* Pass sendierId to Application Insights
