@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExitGamesLibs">
-      <HintPath>..\..\..\..\Photon\Photon-OnPremise-Server-SDK_v4-0-29-11263\deploy\CounterPublisher\bin\ExitGamesLibs.dll</HintPath>
+      <HintPath>..\..\deploy\CounterPublisher\bin\ExitGamesLibs.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.10.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -77,4 +77,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.10.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.10.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Q /Y /I "$(TargetDir)*.*" "$(ProjectDir)..\..\deploy\CounterPublisher\bin"
+xcopy /Q /Y /I "$(TargetDir)*.*" "$(ProjectDir)..\..\deploy\Loadbalancing\GameServer\bin"
+xcopy /Q /Y /I "$(TargetDir)*.*" "$(ProjectDir)..\..\deploy\Loadbalancing\Master\bin"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
