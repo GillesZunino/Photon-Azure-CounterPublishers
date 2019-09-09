@@ -12,6 +12,7 @@ namespace CounterPublisher.Azure.ApplicationInsights
     {
         private static readonly string InstrumentationKeyAttributeName = "instrumentationKey";
         private static readonly string EndpointAttributeName = "endpoint";
+        private static readonly string NamespaceAttributeName = "namespace";
 
 
         [ConfigurationProperty("endpoint", IsRequired = false)]
@@ -26,6 +27,13 @@ namespace CounterPublisher.Azure.ApplicationInsights
         {
             get { return (string)this[InstrumentationKeyAttributeName]; }
             set { this[InstrumentationKeyAttributeName] = value; }
+        }
+
+        [ConfigurationProperty("namespace", IsRequired = false, DefaultValue ="Photon")]
+        public string NamespacePrefix
+        {
+            get { return (string)this[NamespaceAttributeName]; }
+            set { this[NamespaceAttributeName] = value; }
         }
 
         public AgentSettings()

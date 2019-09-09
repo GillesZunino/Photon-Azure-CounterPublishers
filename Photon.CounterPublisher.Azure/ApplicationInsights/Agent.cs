@@ -16,10 +16,13 @@ namespace CounterPublisher.Azure.ApplicationInsights
 	{
         private static readonly char[] SplitCharacters = new char[] { '.' };
 
+        private AgentSettings agentSettings;
         private TelemetryClient telemetryClient;
 
-        public void Initialize(AgentSettings agentSettings)
+        public void Initialize(AgentSettings settings)
         {
+            agentSettings = settings;
+
             // TODO: Initialize ApplicationInsights correctly from configuration file
             TelemetryConfiguration telemetryConfiguration = TelemetryConfiguration.CreateDefault();
             telemetryConfiguration.InstrumentationKey = agentSettings.InstrumentationKey;
@@ -57,18 +60,21 @@ namespace CounterPublisher.Azure.ApplicationInsights
             }
         }
 
-        private static (string metricNamespace, string metricName) GetMetricDefinition(string counterName)
+        private (string metricNamespace, string metricName) GetMetricDefinition(string counterName)
         {
             string[] metricNameSplit = counterName.Split(SplitCharacters, StringSplitOptions.RemoveEmptyEntries);
 
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder(agentSettings.NamespacePrefix);
             for (int index = 0; index < metricNameSplit.Length - 1; index++)
             {
-                if (index > 0) { stringBuilder.Append('.'); }
+                if (stringBuilder.Length > 0) { stringBuilder.Append('.'); }
                 stringBuilder.Append(metricNameSplit[index]);
             }
 
-            return (stringBuilder.ToString(), metricNameSplit[metricNameSplit.Length - 1]);
+            string metricNamespace = stringBuilder.ToString();
+            string metricName = agentSettings.NamespacePrefix + "." + counterName;
+
+            return (metricNamespace, metricName);
         }
     }
 }
