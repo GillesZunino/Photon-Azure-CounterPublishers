@@ -32,13 +32,13 @@ This repository enables Photon's CounterPublisher infrastructure to publish serv
    * `deploy\Loadbalancing\Master\bin`
 
 # Configuration
-Before performance counters can be published, Photon need to be configured to use the plugin. 
+Before performance counters can be published, Photon needs to be configured to use the plugin. The following steps show how to configure the standard LoadBalancing application (Master and GameServer).
 
 1. Create a new Application Insight resource (see [this page](https://docs.microsoft.com/en-us/azure/azure-monitor/app/create-new-resource) for additional details) and copy the instrumentation key,
 
-2. Prepare the configuration section. The following snippetsincludes two placeholders which need to be replaced:
-      * `{#InstrumentationKey#}` with the Application Insights instrumentation key acquired in step 1,
-      * `{#Region#}.{#Cluster#}` with a suitable string to identify the Photon server. `{0}` will be replaced with the machine name.
+2. Prepare the configuration section. The following snippet contains two placeholders which need to be replaced:
+      * `{#InstrumentationKey#}` with the Application Insights instrumentation key acquired during step 1,
+      * `{#Region#}.{#Cluster#}` with a suitable string to identify the Photon server instance. `{0}` will be replaced with the machine name.
     ```xml
     <Photon>
       <CounterPublisher
@@ -64,7 +64,7 @@ Before performance counters can be published, Photon need to be configured to us
    * `deploy\Loadbalancing\GameServer\bin\Photon.LoadBalancing.dll.config`
    * `deploy\Loadbalancing\Master\bin\Photon.LoadBalancing.dll.config`
 
-    Each configuration file above already contains a `<Photon><CounterPublisher .../></Photon>` which can be relaced or augmente.
+    Each configuration file above already contains a `<Photon><CounterPublisher .../></Photon>` which can be relaced or augmented.
 
 5. Start Photon. Metrics should become visible in Application Insights within a few minutes.  
 
