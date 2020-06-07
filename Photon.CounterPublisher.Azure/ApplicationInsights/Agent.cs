@@ -43,8 +43,7 @@ namespace CounterPublisher.Azure.ApplicationInsights
                     //Metric metric = telemetryClient.GetMetric(metricIdentifer);
                     //metric.TrackValue();
 
-                    MetricTelemetry metricTelemetry = new MetricTelemetry();
-                    metricTelemetry.Name = metricName;
+                    MetricTelemetry metricTelemetry = new MetricTelemetry() { Name = metricName };
 
                     if (!string.IsNullOrEmpty(metricNamespace))
                     {
