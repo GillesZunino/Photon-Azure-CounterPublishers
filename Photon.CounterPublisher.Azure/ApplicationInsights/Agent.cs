@@ -24,8 +24,11 @@ namespace CounterPublisher.Azure.ApplicationInsights
             agentSettings = settings;
 
             // TODO: Initialize ApplicationInsights correctly from configuration file
+            // TODO: Use connection string instead of key
+            // TODO: Support workspace based ApplicationInsight instances
             TelemetryConfiguration telemetryConfiguration = TelemetryConfiguration.CreateDefault();
             telemetryConfiguration.InstrumentationKey = agentSettings.InstrumentationKey;
+            telemetryConfiguration.TelemetryInitializers.Add(new CloudTelemetryInitializer(agentSettings));
             telemetryClient = new TelemetryClient(telemetryConfiguration);
         }
 

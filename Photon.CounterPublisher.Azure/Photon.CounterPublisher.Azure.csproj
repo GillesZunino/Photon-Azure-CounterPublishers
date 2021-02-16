@@ -74,6 +74,7 @@
     <Compile Include="ApplicationInsights\Agent.cs" />
     <Compile Include="ApplicationInsights\AgentSettings.cs" />
     <Compile Include="ApplicationInsights\AgentWriter.cs" />
+    <Compile Include="ApplicationInsights\CloudTelemetryInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
