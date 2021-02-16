@@ -13,7 +13,7 @@ namespace CounterPublisher.Azure.ApplicationInsights
     {
         private AgentSettings AgentSettings { get; set; }
 
-        public CloudTelemetryInitializer(AgentSettings agentSettings, )
+        public CloudTelemetryInitializer(AgentSettings agentSettings)
         {
             AgentSettings = agentSettings;
         }
